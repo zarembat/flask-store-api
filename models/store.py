@@ -13,11 +13,19 @@ class StoreModel(db.Model):
         self.name = name
 
     def json(self):
-        return {'name': self.name, 'items': [item.json() for item in self.items.all()]}
+        return {
+            'id': self.id,
+            'name': self.name,
+            'items': [item.json() for item in self.items.all()]
+            }
 
     @classmethod
     def find_by_name(cls, name):
         return cls.query.filter_by(name=name).first()  # will find an item by its name and return an ItemModel object
+
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()
 
     def save_to_db(self):  # SQLAlchemy will upsert data
         db.session.add(self)  # we can add multiple objects to the session
