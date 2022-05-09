@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
 from models.item import ItemModel
 
 
@@ -25,7 +25,7 @@ class Item(Resource):
             return item.json()
         return {'message': 'Item not found.'}, 404
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     def post(self, name):
         # Check it the item with this name is not already in the database
         if ItemModel.find_by_name(name):
@@ -44,6 +44,10 @@ class Item(Resource):
 
     @jwt_required()
     def delete(self, name):
+        # Using claims
+        claims = get_jwt()
+        if not claims['is_admin']:
+            return {'message': 'Admin privilege required.'}, 401
         item = ItemModel.find_by_name(name)
         if item:
             item.delete_from_db()
@@ -68,6 +72,14 @@ class Item(Resource):
         
 
 class ItemList(Resource):
-    def get(self):   
-        return {'items': [item.json() for item in ItemModel.find_all]}
-        # return {'items': list(map(lambda x: x.json(), ItemModel.query.all()))}  # same as above
+    @jwt_required(optional=True)
+    def get(self):
+        user_id = get_jwt_identity()
+        items = [item.json() for item in ItemModel.find_all()]
+        # items = list(map(lambda x: x.json(), ItemModel.query.all()))}  # same as above
+        if user_id:
+            return {'items': items}
+        return {
+            'items': [item['item'] for item in items],
+            'message': 'More data available if you log in.'
+        }
