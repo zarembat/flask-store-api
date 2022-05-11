@@ -1,57 +1,62 @@
 import pytest
-import flask_testing
+
 
 from flask import Flask
+
+from tests import test_defaults
 from db import db
 from models.store import StoreModel
 from models.item import ItemModel
 from models.user import UserModel
 
-@pytest.fixture()
+
+@pytest.fixture(scope="package")
 def test_app():
     app = Flask(__name__)
     app.config.update({
         "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
-        "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+        "SQLALCHEMY_TRACK_MODIFICATIONS": True,
         "TESTING": True
     })
 
     # other setup can go here
     db.init_app(app)
-    with app.app_context():
-        db.create_all()
+    app.app_context().push()
+    db.create_all()
 
     yield app
 
     # clean up / reset resources here
-    with app.app_context():
-        db.session.remove()
-        db.drop_all()
+    db.session.remove()
+    db.drop_all()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="package")
 def client(test_app):
     return test_app.test_client()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="package")
 def runner(test_app):
     return test_app.test_cli_runner()
 
 
-@pytest.fixture(scope='module')
-def store():
-    store = StoreModel("Testing store")
+@pytest.fixture(scope="package")
+def store(test_app):
+    store = StoreModel(test_defaults.TEST_STORE_NAME)
+    store.save_to_db()
     return store
 
 
-@pytest.fixture(scope='module')
-def item():
-    item = ItemModel("Item name", 99.99, 1)
+@pytest.fixture(scope="package")
+def item(test_app):
+    item = ItemModel(test_defaults.TEST_ITEM_NAME, test_defaults.TEST_ITEM_PRICE, test_defaults.TEST_ITEM_STORE_ID)
+    item.save_to_db()
     return item
 
 
-@pytest.fixture(scope='module')
-def user():
-    user = UserModel("Username", "Password")
+@pytest.fixture(scope="package")
+def user(test_app):
+    user = UserModel(test_defaults.TEST_USER_USERNAME, test_defaults.TEST_USER_PASSWORD)
+    user.save_to_db()
     return user

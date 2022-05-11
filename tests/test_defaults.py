@@ -1,0 +1,6 @@
+TEST_STORE_NAME = "Testing store"
+TEST_ITEM_NAME = "Item name"
+TEST_ITEM_PRICE = 99.99
+TEST_ITEM_STORE_ID = 1
+TEST_USER_USERNAME = "Username"
+TEST_USER_PASSWORD = "Password"

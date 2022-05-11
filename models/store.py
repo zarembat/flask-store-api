@@ -21,7 +21,7 @@ class StoreModel(db.Model):
 
     @classmethod
     def find_by_name(cls, name):
-        return cls.query.filter_by(name=name).first()  # will find an item by its name and return an ItemModel object
+        return cls.query.filter_by(name=name).first()  # will find a store by its name and return a StoreModel object
 
     @classmethod
     def find_all(cls):
