@@ -19,6 +19,18 @@ from models.user import UserModel
 # Prevent pytest from trying to collect TestResponse as tests:
 TestResponse.__test__ = False
 
+# Constants to be used in tests
+TEST_STORE_NAME = "Testing store"
+TEST_ITEM_NAME = "Item name"
+TEST_ITEM_PRICE = 99.99
+TEST_ITEM_STORE_ID = 1
+TEST_USER_USERNAME = "test_user"
+TEST_USER_PASSWORD = "test_user_password"
+TEST_AUTH_USER_USERNAME = "auth_user"
+TEST_AUTH_USER_PASSWORD = "auth_user_password"
+TEST_AUTH_ADMIN_USERNAME = "admin_user"
+TEST_AUTH_ADMIN_PASSWORD = "admin_user_password"
+
 
 @pytest.fixture(scope='module')
 def app():

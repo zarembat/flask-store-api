@@ -1,5 +1,4 @@
 import os
-import logging
 import json
 
 from flask import Flask, request, jsonify
@@ -31,6 +30,10 @@ def create_app():
     setup_claims(app)
     setup_endpoints(app)
 
+    @app.before_first_request
+    def create_tables():
+        db.create_all()
+
     return app
 
 
@@ -49,10 +52,6 @@ def setup_endpoints(app):
 
 
 def setup_claims(app):
-
-    @app.before_first_request
-    def create_tables():
-        db.create_all()
 
     jwt = JWTManager(app)
 

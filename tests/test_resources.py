@@ -1,15 +1,13 @@
-from tests.conftest import TestResponse
-
-from tests import constants
+from tests import conftest
 
 
 def test_user_register(client):
-    response: TestResponse = client.post(
+    response: conftest.TestResponse = client.post(
         '/register',
         content_type='application/json',
         json={
-            'username': constants.TEST_USER_USERNAME,
-            'password': constants.TEST_USER_PASSWORD
+            'username': conftest.TEST_USER_USERNAME,
+            'password': conftest.TEST_USER_PASSWORD
         }
     )
     assert b"successfully" in response.data
@@ -17,7 +15,7 @@ def test_user_register(client):
 
 
 def test_user_already_exists(client, auth_user):
-    response: TestResponse = client.post(
+    response: conftest.TestResponse = client.post(
         '/register',
         content_type='application/json',
         json={
@@ -30,7 +28,7 @@ def test_user_already_exists(client, auth_user):
 
 
 def test_get_store_by_name(store, client, auth_user_tokens):
-    response: TestResponse = client.get(
+    response: conftest.TestResponse = client.get(
         f'/store/{store.name}',
         content_type='application/json',
         headers={
@@ -42,7 +40,7 @@ def test_get_store_by_name(store, client, auth_user_tokens):
 
 
 def test_get_store_by_name_not_exist(client, auth_user_tokens):
-    response: TestResponse = client.get(
+    response: conftest.TestResponse = client.get(
         '/store/non_existent_store_name',
         content_type='application/json',
         headers={

@@ -1,8 +1,8 @@
-from tests.conftest import TestResponse
+from tests import conftest
 
 
 def test_get_token(client, auth_user):
-    response: TestResponse = client.post(
+    response: conftest.TestResponse = client.post(
         '/auth',
         content_type='application/json',
         json={
@@ -15,7 +15,7 @@ def test_get_token(client, auth_user):
 
 
 def test_get_token_invalid_credentials(client, auth_user):
-    response: TestResponse = client.post(
+    response: conftest.TestResponse = client.post(
         '/auth',
         content_type='application/json',
         json={
@@ -28,15 +28,15 @@ def test_get_token_invalid_credentials(client, auth_user):
 
 
 def test_endpoint_jwt_required_no_token(client):
-    response: TestResponse = client.post(
+    response: conftest.TestResponse = client.post(
         '/store/test_store',
         content_type='application/json'
     )
     assert response.status_code == 500
 
 
-def test_endpoint_jwt_required(client, auth_user, auth_user_tokens):
-    response: TestResponse = client.post(
+def test_endpoint_jwt_required(client, auth_user_tokens):
+    response: conftest.TestResponse = client.post(
         '/store/test_store',
         content_type='application/json',
         headers={
@@ -48,7 +48,7 @@ def test_endpoint_jwt_required(client, auth_user, auth_user_tokens):
 
 
 def test_admin_privilege_required(client, admin_user_tokens):
-    response: TestResponse = client.delete(
+    response: conftest.TestResponse = client.delete(
         '/store/test_store',
         content_type='application/json',
         headers={
@@ -60,7 +60,7 @@ def test_admin_privilege_required(client, admin_user_tokens):
 
 
 def test_admin_privilege_required_no_admin(client, auth_user_tokens):
-    response: TestResponse = client.delete(
+    response: conftest.TestResponse = client.delete(
         '/store/test_store',
         content_type='application/json',
         headers={
@@ -72,7 +72,7 @@ def test_admin_privilege_required_no_admin(client, auth_user_tokens):
 
 
 def test_optional_token(item, client, auth_user_tokens):
-    response: TestResponse = client.get(
+    response: conftest.TestResponse = client.get(
         '/items',
         content_type='application/json',
         headers={
@@ -84,7 +84,7 @@ def test_optional_token(item, client, auth_user_tokens):
 
 
 def test_optional_token_no_token(item, client, auth_user_tokens):
-    response: TestResponse = client.get(
+    response: conftest.TestResponse = client.get(
         '/items',
         content_type='application/json'
     )
@@ -93,7 +93,7 @@ def test_optional_token_no_token(item, client, auth_user_tokens):
 
 
 def test_token_refresh_wrong_token(client, auth_user_tokens):
-    response: TestResponse = client.post(
+    response: conftest.TestResponse = client.post(
         '/refresh',
         content_type='application/json',
         headers={
@@ -104,7 +104,7 @@ def test_token_refresh_wrong_token(client, auth_user_tokens):
 
 
 def test_token_refresh(client, auth_user_tokens):
-    response: TestResponse = client.post(
+    response: conftest.TestResponse = client.post(
         '/refresh',
         content_type='application/json',
         headers={

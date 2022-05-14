@@ -2,7 +2,6 @@ Flask-RESTful
 Flask-JWT-Extended
 Flask-SQLAlchemy
 Flask
-Flask-Testing
 Werkzeug==2.0.0
 uwsgi
 psycopg2
