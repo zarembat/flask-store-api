@@ -80,6 +80,6 @@ class ItemList(Resource):
         if user_id:
             return {'items': items}
         return {
-            'items': [item['item'] for item in items],
+            'items': [item['name'] for item in items],
             'message': 'More data available if you log in.'
         }

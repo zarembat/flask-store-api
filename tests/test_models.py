@@ -1,7 +1,4 @@
-from flask import Flask
-
-
-from tests import test_defaults
+from tests import constants
 from models.item import ItemModel
 from models.store import StoreModel
 from models.user import UserModel
@@ -13,7 +10,7 @@ WHEN a new store is created
 THEN check if the name is defined correctly
 """
 def test_new_store(store: StoreModel):
-    assert store.name == test_defaults.TEST_STORE_NAME
+    assert store.name == constants.TEST_STORE_NAME
 
 
 """
@@ -22,9 +19,9 @@ WHEN a new item is created
 THEN check if the name, price and store_id are defined correctly
 """
 def test_new_item(item: ItemModel):
-    assert item.name == test_defaults.TEST_ITEM_NAME
-    assert item.price == test_defaults.TEST_ITEM_PRICE
-    assert item.store_id == test_defaults.TEST_ITEM_STORE_ID
+    assert item.name == constants.TEST_ITEM_NAME
+    assert item.price == constants.TEST_ITEM_PRICE
+    assert item.store_id == constants.TEST_ITEM_STORE_ID
 
 
 """
@@ -33,7 +30,7 @@ WHEN a new item is created
 THEN check if it is assigned to the right store
 """
 def test_get_store_for_item(item: ItemModel):
-    assert item.store.name == test_defaults.TEST_STORE_NAME
+    assert item.store.name == constants.TEST_STORE_NAME
 
 
 """
@@ -60,8 +57,8 @@ WHEN a new user is created
 THEN check if the username and password are defined correctly
 """
 def test_new_user(user: UserModel):
-    assert user.username == test_defaults.TEST_USER_USERNAME
-    assert user.password == test_defaults.TEST_USER_PASSWORD
+    assert user.username == constants.TEST_USER_USERNAME
+    assert user.password == constants.TEST_USER_PASSWORD
 
 
 """
@@ -89,7 +86,7 @@ WHEN a username is given
 THEN check if a user can be found by username
 """
 def test_find_user_by_username():
-    user = UserModel.find_by_username(test_defaults.TEST_USER_USERNAME)
+    user = UserModel.find_by_username(constants.TEST_USER_USERNAME)
     test_new_user(user)
 
 
@@ -99,7 +96,7 @@ WHEN a store name is given
 THEN check if a store can be found by name
 """
 def test_find_store_by_name():
-    store = StoreModel.find_by_name(test_defaults.TEST_STORE_NAME)
+    store = StoreModel.find_by_name(constants.TEST_STORE_NAME)
     test_new_store(store)
 
 
@@ -109,7 +106,7 @@ WHEN an item name is given
 THEN check if an item can be found by name
 """
 def test_find_item_by_name():
-    item = ItemModel.find_by_name(test_defaults.TEST_ITEM_NAME)
+    item = ItemModel.find_by_name(constants.TEST_ITEM_NAME)
     test_new_item(item)
 
 

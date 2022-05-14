@@ -9,7 +9,7 @@ class ItemModel(db.Model):
     price = db.Column(db.Float(precision=2))
 
     store_id = db.Column(db.Integer, db.ForeignKey('stores.id'))  # this tells SQLAlchemy that items are assigned to stores and this is the foreign key
-    store = db.relationship('StoreModel')  # we define a relationship
+    store = db.relationship('StoreModel', back_populates="items")  # we define a relationship
 
     def __init__(self, name, price, store_id):
         self.name = name

@@ -7,7 +7,7 @@ class StoreModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
 
-    items = db.relationship('ItemModel', lazy='dynamic')  # it tells SQLAlchemy that StoreModel has a relationship with ItemModel, additionally lazy initialization
+    items = db.relationship('ItemModel', lazy='dynamic', back_populates='store')  # it tells SQLAlchemy that StoreModel has a relationship with ItemModel, lazy initialization
 
     def __init__(self, name):
         self.name = name
